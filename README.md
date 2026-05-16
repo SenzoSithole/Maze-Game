@@ -6,7 +6,9 @@
 
 ## 📸 Overview
 
-NEXUS MAZE is a first/third-person 3D maze game developed as a school group project. The player controls a glowing ball through a large sci-fi maze, collecting scattered items while dodging rotating obstacles, using bounce pads, speed boosts, and teleporters — all rendered in a night environment with a star-filled sky.
+NEXUS MAZE is a first/third-person 3D maze game built with Three.js and Cannon-es. The player controls a glowing ball through a large sci-fi maze, collecting scattered items while dodging rotating obstacles, using bounce pads, speed boosts, and teleporters — all rendered in a night environment with a star-filled sky.
+
+Originally written as part of a school project, this is now being actively developed into a full standalone game.
 
 ---
 
@@ -21,10 +23,10 @@ NEXUS MAZE is a first/third-person 3D maze game developed as a school group proj
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/SenzoSithole/Maze-Game.git
 
 # Navigate into the project folder
-cd your-repo-name
+cd Maze-Game
 
 # Install dependencies
 npm install
@@ -154,15 +156,14 @@ The output will be in the `dist/` folder and can be deployed to any static hosti
 
 ## 👥 Credits
 
-Built as a school group project.
+Built by [@SenzoSithole](https://github.com/SenzoSithole).
 
 - **Three.js** — [threejs.org](https://threejs.org/)
 - **Cannon-es** — Physics by [pmndrs](https://github.com/pmndrs/cannon-es)
-- **Textures** — Sci-Fi Wall 014 and Metal Panel 007 from [ambientcg.com](https://ambientcg.com) / [cgbookcase.com](https://cgbookcase.com) *(update this with your actual source)*
-- **3D Model** — `symmetrical_abstract_ball.glb` *(update with actual credit/source)*
+- **Textures & 3D Model** — Sourced from free asset libraries. Original sources not recorded.
 
 ---
 
 ## 📄 License
 
-This project was created for educational purposes. No license is applied — all rights reserved by the original authors unless otherwise stated.
+No license applied — all rights reserved. This project is being actively developed and a license will be added at a later stage.
