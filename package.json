@@ -6,6 +6,26 @@
     "three": "^0.169.0"
   },
   "devDependencies": {
-    "vite": "^5.4.11"
-  }
+    "vite": "^8.0.13"
+  },
+  "name": "cgv_game-working-on-the-maze",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SenzoSithole/Maze-Game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SenzoSithole/Maze-Game/issues"
+  },
+  "homepage": "https://github.com/SenzoSithole/Maze-Game#readme"
 }
