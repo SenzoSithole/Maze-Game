@@ -3,6 +3,7 @@ import * as CANNON from "cannon-es";
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { wallsData } from "/scripts/wallsData.js";
+import { color, floor, roughness } from "three/tsl";
 
 // Global variables
 let scene, camera, orthoCamera, renderer, physicsWorld;
@@ -21,6 +22,19 @@ let collectedCount = 0; // Track collected items
 let textureLoader;
 let nightSky;
 let isAlive = true; // Track if the player is alive
+
+const textures = {
+  wall: {
+    color: null,
+    normal: null,
+    roughness: null
+  },
+  floor: {
+    color: null,
+    normal: null,
+    roughness: null
+  }
+};
 
 // Add these variables to your global variables section
 let movingPlatforms = [];
@@ -51,6 +65,7 @@ const raycaster = new THREE.Raycaster();
 function initGame() {
   initScene();
   initPhysics();
+  initTextures();
   createFloor();
   createMaze(wallsData);
   initializeObstacles();
@@ -152,33 +167,60 @@ function initPhysics() {
   physicsWorld.gravity.set(0, -30, 0);
 }
 
-function createFloor() {
-  const floorSize = 150;
+function initTextures() {
+  // Wall textures
+  textures.wall.color = textureLoader.load(
+    "./textures/Sci_fi_Metal_Panel_007_SD/Sci_fi_Metal_Panel_007_basecolor.png"
+  );
+  textures.wall.normal = textureLoader.load(
+    "./textures/Sci_fi_Metal_Panel_007_SD/Sci_fi_Metal_Panel_007_normal.png"
+  );
+  textures.wall.roughness = textureLoader.load(
+    "./textures/Sci_fi_Metal_Panel_007_SD/Sci_fi_Metal_Panel_007_roughness.png"
+  );
 
-  // Load textures
-  const colorTexture = textureLoader.load(
+  // Floor textures
+  textures.floor.color = textureLoader.load(
     "./textures/Sci-Fi_Wall_014_SD/Sci-Fi_Wall_014_basecolor.jpg"
   );
-  const normalTexture = textureLoader.load(
+  textures.floor.normal = textureLoader.load(
     "./textures/Sci-Fi_Wall_014_SD/Sci-Fi_Wall_014_normal.jpg"
   );
-  const roughnessTexture = textureLoader.load(
+  textures.floor.roughness = textureLoader.load(
     "./textures/Sci-Fi_Wall_014_SD/Sci-Fi_Wall_014_roughness.jpg"
   );
 
-  // Set texture properties
-  [colorTexture, normalTexture, roughnessTexture].forEach((texture) => {
+  // Configure all textures the same way — DRY principle
+  [
+    textures.wall.color,
+    textures.wall.normal,
+    textures.wall.roughness,
+    textures.floor.color,
+    textures.floor.normal,
+    textures.floor.roughness
+  ].forEach((texture) => {
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    // Set how many times the texture repeats across the floor
-    texture.repeat.set(20, 20);
-    // Enable anisotropic filtering for better quality at angles
     texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
   });
 
+  // Floor specific tiling — applied after shared config
+  [
+    textures.floor.color,
+    textures.floor.normal,
+    textures.floor.roughness
+  ].forEach((texture) => {
+    texture.repeat.set(20, 20);
+  });
+}
+
+
+function createFloor() {
+  const floorSize = 150;
+
   const floorMaterial = new THREE.MeshStandardMaterial({
-    map: colorTexture,
-    normalMap: normalTexture,
-    roughnessMap: roughnessTexture,
+    map: textures.floor.color,
+    normalMap: textures.floor.normal,
+    roughnessMap: textures.floor.roughness,
     side: THREE.DoubleSide,
     roughness: 0.8,
     metalness: 0.2,
@@ -205,23 +247,6 @@ function createWall(x, z, length, height, isAlignedWithZ) {
   const scaledLength = length * scaleFactor;
   const scaledHeight = height * scaleFactor;
 
-  // Load textures
-  const colorTexture = textureLoader.load(
-    "./textures/Sci_fi_Metal_Panel_007_SD/Sci_fi_Metal_Panel_007_basecolor.png"
-  ); // Replace with your texture path
-  const normalTexture = textureLoader.load(
-    "./textures/Sci_fi_Metal_Panel_007_SD/Sci_fi_Metal_Panel_007_normal.png"
-  ); // Replace with your normal map
-  const roughnessTexture = textureLoader.load(
-    "./textures/Sci_fi_Metal_Panel_007_SD/Sci_fi_Metal_Panel_007_roughness.png"
-  ); // Replace with your roughness map
-
-  // Set texture properties
-  [colorTexture, normalTexture, roughnessTexture].forEach((texture) => {
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    // Enable anisotropic filtering for better quality at angles
-    texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-  });
 
   // Calculate texture repeat based on real-world size
   // Assuming you want the texture to repeat every 2 units
@@ -241,9 +266,9 @@ function createWall(x, z, length, height, isAlignedWithZ) {
   const repeatY = scaledHeight / textureScale;
 
   const wallMaterial = new THREE.MeshStandardMaterial({
-    map: colorTexture,
-    normalMap: normalTexture,
-    roughnessMap: roughnessTexture,
+    map: textures.wall.color,
+    normalMap: textures.wall.normal,
+    roughnessMap: textures.wall.roughness,
     roughness: 0.7,
     metalness: 0.3,
     side: THREE.DoubleSide,
