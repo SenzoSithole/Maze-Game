@@ -3,7 +3,6 @@ import * as CANNON from "cannon-es";
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { wallsData } from "/scripts/wallsData.js";
-import { color, floor, roughness } from "three/tsl";
 
 // Global variables
 let scene, camera, orthoCamera, renderer, physicsWorld;
@@ -14,7 +13,6 @@ let walls = [];
 // let orbitControls;
 let requiredCollectibles;
 let hiddenWall, buttonBody, buttonMesh;
-let wallSlideTimeout;
 let wallSlideSpeed = 0.1;
 let hiddenWallBody;
 let collectibles = [];
@@ -22,6 +20,7 @@ let collectedCount = 0; // Track collected items
 let textureLoader;
 let nightSky;
 let isAlive = true; // Track if the player is alive
+let isWallSliding = false; // Track if the wall is currently sliding
 
 const textures = {
   wall: {
@@ -395,6 +394,7 @@ function checkCollectibleCollisions() {
         collectible.collected = true; // Mark as collected
         collectedCount++; // Increment the count
         updateCollectibleCounter(); // Update collectible counter display
+        if (collectedCount === requiredCollectibles) { isWallSliding = true };
         console.log("Collected an item! Total collected:", collectedCount);
 
         // Remove the collectible's physics body
@@ -458,34 +458,7 @@ function addInteractiveElements() {
   createHiddenWall();
 }
 
-function showWall() {
-  // Check if all collectables have been collected
-  if (collectedCount === requiredCollectibles) {
-    // Set the wall to be visible
-    // hiddenWall.visible = true;
-    // isWallVisible = true;
 
-    // Start the wall sliding animation
-    wallSlideTimeout = setInterval(() => {
-      // Move the wall down by the slide speed
-      hiddenWall.position.y -= wallSlideSpeed;
-
-      // Check if the wall has reached the bottom
-      if (hiddenWall.position.y <= 0) {
-        // Stop the sliding animation
-        clearInterval(wallSlideTimeout);
-
-        // Disable the wall's physics body
-        hiddenWallBody.sleep();
-        hiddenWallBody.collisionResponse = false;
-      }
-    }, 16); // 16 ms = ~60 FPS
-
-    console.log("Wall appeared!");
-  } else {
-    console.log("Collect all items before the wall appears!");
-  }
-}
 
 function createBall() {
   const sphereShape = new CANNON.Sphere(0.5);
@@ -584,13 +557,6 @@ function setupLights() {
   directionalLight.layers.set(0);
   scene.add(directionalLight);
 }
-
-// function checkBallButtonCollision() {
-//     const distanceToButton = ballBody.position.distanceTo(buttonBody.position);
-//     if (distanceToButton < 1.5 && !isWallVisible) { // Collision threshold and wall visibility check
-//         showWall();
-//     }
-// }
 
 function createNightSky() {
   // Create star field with improved point sprites
@@ -1160,7 +1126,17 @@ function animate() {
 
   physicsWorld.step(1 / 60);
 
-  showWall();
+  if (isWallSliding) {
+    // Move the wall down by the slide speed
+    hiddenWall.position.y -= wallSlideSpeed;
+
+    // Check if the wall has reached the bottom
+    if (hiddenWall.position.y <= 0) {
+      // Disable the wall's physics body
+      hiddenWallBody.sleep();
+      hiddenWallBody.collisionResponse = false;
+    }
+  }
 
   if (isAlive) {
     // Only update if the player is alive
