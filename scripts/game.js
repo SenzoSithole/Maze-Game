@@ -1017,8 +1017,29 @@ function restartGame() {
   });
   updateCollectibleCounter(); // Reset collectible counter display
 
-  // Recreate the ball and add it back to the scene
+  // Remove the ball and its physics body from the scene and physics world
+  if (ball) {
+    scene.remove(ball);
+    ball = null;
+  }
 
+  if (ballBody) {
+    physicsWorld.removeBody(ballBody);
+    ballBody = null;
+  }
+
+  //Safely remove the soccer goal model if it exists
+  if (soccerGoal) {
+    soccerGoal = null;
+  }
+
+  // Reset hidden wall state
+  isWallSliding = false;
+  hiddenWall.position.set(4, 5, 50);
+  hiddenWallBody.wakeUp();
+  hiddenWallBody.collisionResponse = true;
+
+  // Recreate the ball and add it back to the scene
   createBall();
   loadModel();
 
@@ -1094,8 +1115,10 @@ function handleDeath() {
   isAlive = false;
 
   // Remove the ball from the scene
-  if (ball) scene.remove(ball);
-
+  if (ball) {
+    scene.remove(ball);
+    ball = null;
+  }
   // Show the game-over screen
   loadGameOverScreen();
 
