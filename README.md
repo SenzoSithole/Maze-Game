@@ -143,9 +143,9 @@ The output will be in the `dist/` folder and can be deployed to any static hosti
 
 ## 🔮 Planned Improvements
 
-- [ ] Texture caching — load each texture once, share across all walls
-- [ ] Fix `showWall()` animation loop bug
-- [ ] Full game state reset on restart (clean physics world)
+- [x] Texture caching — load each texture once, share across all walls
+- [x] Fix `showWall()` animation loop bug
+- [x] Full game state reset on restart (clean physics world)
 - [ ] Reduced-fidelity minimap rendering
 - [ ] Sound effects (collect, death, boost, teleport)
 - [ ] A timer / leaderboard
