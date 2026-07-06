@@ -2,6 +2,8 @@
 
 > A 3D browser-based maze game built with Three.js and Cannon-es. Navigate a sci-fi labyrinth at night, collect all items, avoid deadly obstacles, and reach the exit.
 
+**🎮 [Play it live](https://senzosithole.github.io/Maze-Game/)**
+
 ---
 
 ## 📸 Overview
