@@ -2,7 +2,7 @@ import * as THREE from "three";
 import * as CANNON from "cannon-es";
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { wallsData } from "/scripts/wallsData.js";
+import { wallsData } from "./wallsData.js";
 
 // Global variables
 let scene, camera, orthoCamera, renderer, physicsWorld;
@@ -1086,7 +1086,7 @@ function quitGame() {
 }
 
 function loadGameOverScreen() {
-  fetch("./scripts/gameOverScreen.html")
+  fetch("./gameOverScreen.html")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

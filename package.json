@@ -1,6 +1,12 @@
-{ "dependencies": { "cannon": "^0.6.2", "cannon-es": "^0.20.0", "dat.gui": "^0.7.9", "three": "^0.169.0"
+{
+  "dependencies": {
+    "cannon": "^0.6.2",
+    "cannon-es": "^0.20.0",
+    "dat.gui": "^0.7.9",
+    "three": "^0.169.0"
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "vite": "^8.0.13"
   },
   "name": "cgv_game-working-on-the-maze",
@@ -9,6 +15,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
